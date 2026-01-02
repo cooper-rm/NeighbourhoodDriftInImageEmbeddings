@@ -1,0 +1,9 @@
+numpy
+torch
+torchvision
+torchaudio
+faiss-cpu
+matplotlib
+tqdm
+ipykernal
+pyyaml

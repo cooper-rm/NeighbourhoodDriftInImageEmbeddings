@@ -1,0 +1,13 @@
+experiment:
+  seed: 42
+  num_experiments: 10
+  
+
+paths:
+  data_dir: data
+  runs_dir: runs
+
+logging:
+  save_plots: true
+  save_metrics: true
+  
