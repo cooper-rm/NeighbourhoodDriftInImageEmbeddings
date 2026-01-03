@@ -8,3 +8,4 @@ tqdm
 ipykernal
 pyyaml
 pandas
+scipy

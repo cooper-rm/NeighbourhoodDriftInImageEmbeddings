@@ -40,13 +40,9 @@ def compute_overlap_stats(
 
 
 
-def compute_distance_divergence_stats(
-    D_exact, 
-    D_ann
-):
-    
+def compute_distance_stats(D_exact, D_ann):
     """
-    Compute normalized divergence between ANN and exact k-NN distances.
+    Compute mean and std of k-NN distances for exact and ANN neighborhoods.
 
     Parameters
     ----------
@@ -57,21 +53,38 @@ def compute_distance_divergence_stats(
 
     Returns
     -------
-    mean_divergence : float
-    std_divergence : float
+    stats : dict
+        {
+            "mean_exact_dist": float,
+            "std_exact_dist": float,
+            "mean_ann_dist": float,
+            "std_ann_dist": float,
+        }
     """
-    
-    # Mean distance per query
-    mean_exact = np.mean(D_exact, axis=1)
-    mean_ann = np.mean(D_ann, axis=1)
 
-    # Normalized divergence per query
-    eps = 1e-12
-    divergence = (mean_ann - mean_exact) / (mean_exact + eps)
+    # Per-query mean distances
+    mean_exact_per_q = np.mean(D_exact, axis=1)
+    mean_ann_per_q   = np.mean(D_ann, axis=1)
 
+    # Guard against garbage
+    valid = np.isfinite(mean_exact_per_q) & np.isfinite(mean_ann_per_q)
+    if not np.any(valid):
+        return {
+            "mean_exact_dist": np.nan,
+            "std_exact_dist": np.nan,
+            "mean_ann_dist": np.nan,
+            "std_ann_dist": np.nan,
+        }
 
-    return float(np.mean(divergence)), float(np.std(divergence))
+    mean_exact_per_q = mean_exact_per_q[valid]
+    mean_ann_per_q   = mean_ann_per_q[valid]
 
+    return {
+        "mean_exact_dist": float(mean_exact_per_q.mean()),
+        "std_exact_dist":  float(mean_exact_per_q.std()),
+        "mean_ann_dist":   float(mean_ann_per_q.mean()),
+        "std_ann_dist":    float(mean_ann_per_q.std()),
+    }
 
 
 
