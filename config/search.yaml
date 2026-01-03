@@ -1,5 +1,5 @@
 search:
   knn:
-    k_min: 10
-    k_max: 250
-    k_step: 10
+    k_min: 5
+    k_max: 500
+    k_step: 5
