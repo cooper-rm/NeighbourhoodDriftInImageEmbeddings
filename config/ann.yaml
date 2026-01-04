@@ -1,8 +1,0 @@
-ann:
-  batch_size: 32
-
-  hnsw:
-    m: 32
-    ef_construction: 200
-    ef_search: 50
-

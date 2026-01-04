@@ -1,0 +1,101 @@
+# ============================
+# Global experiment settings
+# ============================
+experiment:
+  name: neighborhood_analysis
+  base_seed: 42
+  max_runs: 25
+  min_runs: 10
+  convergence:
+    enabled: true
+    window: 5
+    tolerance_abs: 1e-3
+    tolerance_std: 1e-4
+
+# ============================
+# Dataset & sampling
+# ============================
+data:
+  
+  dataset: STL-10
+  total_size: 100000
+
+  sample:
+    enabled: true
+    subset_size: 10000
+    sampling: random
+    replacement: false
+
+# ============================
+# Embedding model
+# ============================
+embedding:
+  model: resnet50
+  pretrained: imagenet1k
+  output_dim: 2048
+  batch_size: 32
+  device: cuda
+  normalize: false
+
+# ============================
+# Similarity search
+# ============================
+search:
+  distance_metric: l2
+
+  exact:
+    enabled: true
+
+  ann:
+    enabled: true
+    algorithm: hnsw
+    parameters:
+      M: 32
+      efConstruction: 200
+      efSearch: 50
+
+# ============================
+# Neighborhood evaluation
+# ============================
+evaluation:
+  min_k: 10
+  max_k: 500
+  k_step: 10
+  metrics:
+    neighborhood_overlap: true
+    average_neighbor_distance: true
+    barycenter_shift: true
+    local_intrinsic_dimensionality: true
+
+
+# ============================
+# Experiment 1: fixed efSearch comparison
+# ============================
+ef_search_study:
+  enabled: true
+  values: [20, 50, 100]
+
+# ============================
+# Experiment 2: efConstruction sensitivity
+# ============================
+ef_construction_study:
+  enabled: true
+  values: [50, 100, 200, 300, 400]
+
+# ============================
+# Experiment 3: alpha study (single-run)
+# ============================
+alpha_study:
+  enabled: true
+  single_run: true
+  alpha_values: [0.25, 0.5, 1.0, 2.0, 4.0]
+
+# ============================
+# Output & reproducibility
+# ============================
+output:
+  save_embeddings: true
+  save_neighbors: false
+  save_metrics: true
+  save_plots: true
+  format: json
