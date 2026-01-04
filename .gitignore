@@ -15,7 +15,8 @@
 *.userprefs
 
 #For now dont push runs or data
-runs/
+*.npy
+*.npz
 data/
 # Mono auto generated files
 mono_crash.*
